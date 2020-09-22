@@ -105,6 +105,21 @@ class ParseBase(object):
 
         url = uri if uri.startswith(API_ROOT) else cls.ENDPOINT_ROOT + uri
         if _body is None:
+            # FIXME: There is a "Circular reference detected" bug here, when try do a signup with many arguments
+            """
+            Example:
+            UserParse.signup(
+                username=p_username,
+                password=p_password,
+                phone=p_phone,
+                status=p_status,
+                city=p_city,
+                name=p_name,
+                cpf=p_cpf,
+                email=p_email,
+                type=p_type
+            )
+            """
             data = kw and json.dumps(kw, default=date_handler) or "{}"
         else:
             data = _body
